@@ -1,6 +1,16 @@
 
+import { HeaderMenu} from "../../styles/styles"
+
+
+
+
 export function Header(){
   return(
-    <div>Heelo</div>
+
+    <HeaderMenu>
+       <img src="/img/logo.png" alt="" />
+       <h1>Pokédex</h1>
+    </HeaderMenu>
+   
   )
 }
