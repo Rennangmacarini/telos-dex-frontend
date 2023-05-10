@@ -16,12 +16,13 @@ export function Home() {
   };
 
   const [pokemons, setPokemons] = useContext(PokedexContext)
+  console.log(pokemons)
 
   const [selectedImage, setSelectedImage] = useState(imagens.number);
 
   function search() {
       axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=4")
+      .get("")
       .then((response) => {
         response.data.results.map(async (item) => {
           await axios.get(item.url).then((pokemon) => {
