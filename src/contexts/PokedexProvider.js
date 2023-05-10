@@ -8,7 +8,7 @@ export function PokedexProvider({ children }){
 
   const teste = (name) => {
       axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=4")
+      .get("https://pokeapi.co/api/v2/pokemon?limit=1")
       .then((response) => {
         response.data.results.map(async (item) => {
           await axios.get(item.url).then((pokemon) => {
