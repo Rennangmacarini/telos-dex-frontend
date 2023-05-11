@@ -3,71 +3,38 @@ import { CardPokemons } from "../../components/CardPokemons";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
 import { Container, Global, InputButtonDisplay } from "../../styles/styles";
-import { TbSearch } from "react-icons/tb"
+import { TbSearch } from "react-icons/tb";
 import { PokedexContext } from "../../contexts/PokedexContext";
 import { SortBy } from "../../components/SortBy";
-import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 export function Home() {
-
   const imagens = {
-    number: './img/hashtag.png',
-    text: './img/letter.png',
+    number: "./img/hashtag.png",
+    text: "./img/letter.png",
   };
 
-  const [pokemons, setPokemons] = useContext(PokedexContext)
-  console.log(pokemons)
+  const [pokemons, setPokemons, search, loading] = useContext(PokedexContext);
 
   const [selectedImage, setSelectedImage] = useState(imagens.number);
 
-  function search() {
-      axios
-      .get("")
-      .then((response) => {
-        response.data.results.map(async (item) => {
-          await axios.get(item.url).then((pokemon) => {
-            setPokemons((prev) => [...prev, pokemon.data]);
-          });
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-
   const handleImageChange = (event) => {
-    let img = imagens.text
-    let sortList = pokemons.sort((a, b) => a.name.localeCompare(b.name))
+    let img = imagens.text;
+    let sortList = pokemons.sort((a, b) => a.name.localeCompare(b.name));
 
-    if (event.target.value === 'number') {
-      img = imagens.number
-      sortList = pokemons.sort((a, b) => a.game_indices[0].game_index - b.game_indices[0].game_index)
+    if (event.target.value === "number") {
+      img = imagens.number;
+      sortList = pokemons.sort(
+        (a, b) => a.game_indices[0].game_index - b.game_indices[0].game_index
+      );
     }
-    setPokemons(sortList)
+    setPokemons(sortList);
     setSelectedImage(img);
   };
 
-
-
   const pokemonsFilter = (name) => {
-    if(name === ""){
-      search()
-    }
-
-    let filterData = pokemons.filter(item => item.name.includes(name))
-    if(filterData.length === 0){
-     filterData = pokemons.filter(item => String(item.game_indices[0].game_index).includes(name))
-    }
-     
-    let sortList = filterData.sort((a,b) => a.name.localeCompare(b.name))
-    if(selectedImage === 'number'){
-      sortList = pokemons.sort((a,b) => a.game_indices[0].game_index - b.game_indices[0].game_index )
-    }
-    setPokemons(sortList)
-    setPokemons(filterData)
-  }
-
+    search(name);
+  };
 
   return (
     <>
@@ -75,16 +42,32 @@ export function Home() {
         <Container>
           <Header />
           <InputButtonDisplay>
-            <Input icon={TbSearch} placeholder="Search" type="text" onChange={(e) => pokemonsFilter(e.target.value)} />
+            <Input
+              icon={TbSearch}
+              placeholder="Search"
+              type="text"
+              onChange={(e) => pokemonsFilter(e.target.value === "" ? undefined : e.target.value)}
+            />
             <img src={selectedImage} alt="" />
           </InputButtonDisplay>
-          <CardPokemons />
+
+          {loading && (
+            <div
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+                padding: "20px",
+              }}
+            >
+              <CircularProgress sx={{ color: `white` }} />
+            </div>
+          )}
+          {!loading && <CardPokemons pokemons={pokemons} />}
         </Container>
-        <SortBy
-          selectedImage={selectedImage}
-          handleImageChange={handleImageChange}
-        />
+        <SortBy selectedImage={selectedImage} handleImageChange={handleImageChange} />
       </Global>
     </>
-  )
+  );
 }
