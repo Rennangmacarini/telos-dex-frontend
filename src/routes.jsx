@@ -18,7 +18,7 @@ export function AppRoutes() {
           <PokedexProvider>
             <Information />
           </PokedexProvider>
-        } path="/Information"/> 
+        } path="/Information/:pokemonId"/> 
       </Routes>
     </BrowserRouter>
   )
