@@ -14,6 +14,14 @@ export const Container = styled.div`
   margin: auto;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND_RED};
   padding: 4px;
+  border: 5px solid black;
+`;
+
+export const Containers = styled.div`
+  width: 360px;
+  margin: auto;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND_RED};
+  padding: 4px;
 `;
 
 export const HeaderMenu = styled.div`
@@ -48,12 +56,15 @@ export const Content = styled.div`
   text-align: center;
   grid-template-columns: 1fr 1fr 1fr;
   width: 350px;
+  height: 500px;
   
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   box-shadow: inset 0px 1px 3px 1px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   margin-top: 24px;
   padding: 24px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 export const Card = styled.div`
